@@ -5,14 +5,17 @@ import { ScrollView, View } from "react-native";
 import { Card, Switch, Text } from "react-native-paper";
 
 type SinistreType = {
-  id: number | string,
-  plate?: string,
-  sinister_datetime?: any,
-  context?: string,
-  driver_firstname?: string,
-  driver_lastname?: string,
-  call_datetime?: any,
-  driver_responsability: boolean
+    id: number | string,
+    immatriculation?: string,
+    est_assure?: boolean
+    date_heure_appel?: any,
+    date_heure_sinistre?: any,
+    status?: string,
+    contexte?: string,
+    pourcentage_responsabilite?: any,
+    est_responsable?: boolean
+    user_client_id?: any,
+    user_salarie_id?: any
 }
 
 export default function SinistreDetailScreen() {
@@ -24,10 +27,11 @@ export default function SinistreDetailScreen() {
 
     // fetch récupérer le sinistre courant
     useEffect(() => {
-        fetchData('/sinistres/'+id, 'GET', {}, true)
+        fetchData('/sinistre/'+id, 'GET', {}, true)
             .then(data => {
-                const { sinistre } = data;
-                setSinistre(sinistre)
+                console.log('Sinistre data ', data)
+                const { results } = data;
+                setSinistre(results)
             })
             .catch(err => {
                 console.log('Error on get sinistre ' + err.message)
@@ -49,17 +53,13 @@ export default function SinistreDetailScreen() {
             >
                 <Card.Title title="Mon sinistre" />
                 <Card.Content>
-                    <Text>Plaque : {sinistre.plate}</Text>
-                    <Text>Date du sinistre : {sinistre.sinister_datetime}</Text>
-                    <Text>Date de signalement du sinistre : {sinistre.call_datetime}</Text>
-                    <Text>Nom du conducteur : {sinistre.driver_lastname}</Text>
-                    <Text>Prénom du conducteur : {sinistre.driver_firstname}</Text>
-                    <Text>Contexte du sinistre : {sinistre.context}</Text>
-                    <Text>Responsabilité conducteur : </Text>
-                    <Switch
-                        disabled
-                        value={sinistre.driver_responsability}
-                    />
+                    <Text>Plaque : {sinistre.immatriculation}</Text>
+                    <Text>Date du sinistre : {sinistre.date_heure_sinistre}</Text>
+                    <Text>Date de signalement du sinistre : {sinistre.date_heure_appel}</Text>
+                    <Text>Contexte du sinistre : {sinistre.contexte}</Text>
+                    <Text>Pourcentage responsabilité : {sinistre.pourcentage_responsabilite}</Text>
+                    <Text>Responsabilité conducteur : {sinistre.est_responsable}</Text>
+
                 </Card.Content>
             </Card>
         </ScrollView>
